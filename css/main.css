@@ -10,8 +10,9 @@ h1 {
   margin-right: auto;
   margin-bottom: 30px;
   margin: 40px auto;
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Roboto', sans-serif;
   font-size: 65px;
+  font-weight: 300;
   color: white;
 }
 
@@ -19,7 +20,7 @@ h2 {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Roboto', sans-serif;
   color: white;
   font-size: 30px;
 }
@@ -36,7 +37,7 @@ table {
   height: 100px;
   border-radius: 20px;
   margin: 5px auto;
-  border: 4px dotted white;
+  border: 2px solid white;
   background-color: #494A4D;
 }
 
@@ -49,7 +50,7 @@ table {
 .player1, .player2 {
   margin: 0 auto;
   text-align: center;
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Roboto', sans-serif;
   color: white;
   font-size: 30px;
 }
@@ -58,7 +59,7 @@ table {
   text-align: center;
   margin: 10px;
   margin-bottom: 15px;
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Roboto', sans-serif;
   font-size: 40px;
   color: white;
 }
@@ -67,11 +68,11 @@ table {
   background-color: #494A4D;
   width: 125px;
   height: 125px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 90px;
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Roboto', sans-serif;
   color: white;
-  border: 4px dotted white;
+  border: 2px solid white;
 }
 
 .box:hover {
@@ -93,13 +94,13 @@ table {
   height: 45px;
   width: 100px;
   margin: 15px;
-  border-radius: 13px;
+  border-radius: 2px;
   outline: none;
 }
 
 .buttonText {
   text-align: center;
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Roboto', sans-serif;
   font-size: 25px;
   font-weight: bold;
 }

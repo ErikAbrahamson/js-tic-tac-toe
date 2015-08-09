@@ -1,66 +1,107 @@
 function Game() {
-  this.turnCounter = 1;
   this.board = new Board();
+  this.turnCounter = 0;
   this.player1 = new Player('x');
   this.player2 = new Player('o');
 }
-function Player(team, cellID) {
+
+function Player(team) {
   this.team = team;
-  this.cellID = cellID || null;
+  this.cellId = null;
   this.playerScore = 0;
 }
+
 function Board() {
+  this.moveArr = [null, null, null, null, null, null, null, null, null];
   this.$cells = $('.box');
-  this.moveArr = [
-    null, null, null,
-    null, null, null,
-    null, null, null
-  ];
+  $('#reset').on('click', function() {
+    game.board.resetBoard();
+  });
 }
+
 Game.prototype.nextPlayer = function() {
-  if (this.turnCounter === 1) {
-    this.turnCounter = 2;
+  this.turnCounter++;
+  this.board.checkWinner();
+  if (this.currentPlayer === this.player1) {
     this.currentPlayer = this.player2;
   } else {
-    this.turnCounter = 1;
     this.currentPlayer = this.player1;
   }
-};
-Board.prototype.makeMove = function(cellID, team) {
-  this.moveArr[cellID] = team;
-};
-Board.prototype.winCondition = [
-  [0,1,2],[3,4,5],[6,7,8],
-  [0,3,6],[1,4,7],[2,5,8],
-  [0,4,8],[2,4,6]
- ];
- Board.prototype.checkWinner = function(team) {
-  console.log(team);
-  console.log(this.moveArr);
-  for (var i = 0; i < this.winCondition.length; i++) {
-    if ((this.moveArr[this.winCondition[i][0]] === team)
-      && (this.moveArr[this.winCondition[i][1]] === team)
-      && (this.moveArr[this.winCondition[i][2]] === team)) {
-        console.log('winner');
-      }
-    }
+  $('#your-turn').text(" Player " + this.currentPlayer.team);
 };
 
+Game.prototype.updateScore = function(currentPlayer) {
+  if (currentPlayer === game.player1.team) {
+    $('#oneScore').text(game.player1.playerScore);
+  } else {
+    $('#twoScore').text(game.player2.playerScore);
+  }
+};
 
-$(document).ready(function() {
-  game.currentPlayer = game.player1;
-  $('.box').on('click', function(event) {
-    event.preventDefault();
-    if ($(this).html() === '&nbsp;') {
-      $(this).text(game.currentPlayer.team);
-      var cellID = $(this).attr('id');
-      game.board.makeMove(cellID, game.currentPlayer.team);
-      game.board.checkWinner(game.currentPlayer.team);
-      game.nextPlayer();
-    } else {
-      alert('space already taken you fool!');
-    }
+Game.prototype.init = function() {
+  this.currentPlayer = this.player1;
+  $(game.board.$cells).on('click', function(event) {
+    game.board.makeMove();
   });
-});
+};
+
+
+Board.prototype.makeMove = function() {
+  if ($(event.target).html() === '&nbsp;') {
+    $(event.target).text(game.currentPlayer.team);
+    var currentCell = parseInt(event.target.id);
+    this.moveArr[currentCell] = game.currentPlayer.team;
+    game.nextPlayer();
+  } else {
+    alert("This square is already taken!");
+  }
+};
+
+Board.prototype.winCondition = [
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+];
+
+Board.prototype.checkWinner = function() {
+
+  var hasWinner = false;
+  for (var i = 0; i < this.winCondition.length; i++) {
+    if (game.board.moveArr[this.winCondition[i][0]] === (game.currentPlayer.team) &&
+      game.board.moveArr[this.winCondition[i][1]] === (game.currentPlayer.team) &&
+      game.board.moveArr[this.winCondition[i][2]] === (game.currentPlayer.team)) {
+      hasWinner = true;
+    }
+  }
+  if (hasWinner) {
+    alert("Player " + game.currentPlayer.team + " has won!");
+    game.currentPlayer.playerScore++;
+    game.updateScore(game.currentPlayer.team);
+    game.board.resetBoard();
+  }
+  this.hasWinner = false;
+  if (game.turnCounter === 9 && game.board.hasWinner === false) {
+    alert("Its a tie!");
+    game.board.resetBoard();
+  }
+};
+
+Board.prototype.resetBoard = function() {
+  game.board.$cells.html('&nbsp;');
+  game.board.nullArray();
+  game.turnCounter = 0;
+};
+
+Board.prototype.nullArray = function() {
+  this.moveArr = game.board.moveArr.map(function(val, i) {
+    return val !== null ? null : val;
+  });
+};
 
 var game = new Game();
+game.init();
