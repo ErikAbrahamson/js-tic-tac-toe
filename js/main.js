@@ -12,8 +12,8 @@ function Player(team) {
 }
 
 function Board() {
-  this.moveArr = [null, null, null, null, null, null, null, null, null];
   this.$cells = $('.box');
+  this.moveArr = [null, null, null, null, null, null, null, null, null];
   $('#reset').on('click', function() {
     game.board.resetBoard();
   });
@@ -45,7 +45,6 @@ Game.prototype.init = function() {
   });
 };
 
-
 Board.prototype.makeMove = function() {
   if ($(event.target).html() === '&nbsp;') {
     $(event.target).text(game.currentPlayer.team);
@@ -69,24 +68,23 @@ Board.prototype.winCondition = [
 ];
 
 Board.prototype.checkWinner = function() {
-
-  var hasWinner = false;
+  var winner = false;
   for (var i = 0; i < this.winCondition.length; i++) {
     if (game.board.moveArr[this.winCondition[i][0]] === (game.currentPlayer.team) &&
       game.board.moveArr[this.winCondition[i][1]] === (game.currentPlayer.team) &&
       game.board.moveArr[this.winCondition[i][2]] === (game.currentPlayer.team)) {
-      hasWinner = true;
+      winner = true;
     }
   }
-  if (hasWinner) {
-    alert("Player " + game.currentPlayer.team + " has won!");
+  if (winner) {
+    alert('Player ' + game.currentPlayer.team + ' wins');
     game.currentPlayer.playerScore++;
     game.updateScore(game.currentPlayer.team);
     game.board.resetBoard();
   }
-  this.hasWinner = false;
-  if (game.turnCounter === 9 && game.board.hasWinner === false) {
-    alert("Its a tie!");
+  this.winner = false;
+  if (game.turnCounter === 9 && game.board.winner === false) {
+    alert('tie');
     game.board.resetBoard();
   }
 };
