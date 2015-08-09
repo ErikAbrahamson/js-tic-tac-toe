@@ -28,43 +28,39 @@ Game.prototype.nextPlayer = function() {
 };
 Board.prototype.makeMove = function(cellID, team) {
   this.moveArr[cellID] = team;
-  console.log(this.moveArr);
-  console.log(this.cellID);
 };
 Board.prototype.winCondition = [
   [0,1,2],[3,4,5],[6,7,8],
   [0,3,6],[1,4,7],[2,5,8],
   [0,4,8],[2,4,6]
  ];
- Board.prototype.checkWinner = function(cellID) {
-  for (var i = 0; i < this.checkWinner.length; i++) {
-    if ((this.checkWinner[i][0] == this.moveArr[cellID])
-      && (this.checkWinner[i][1] == this.moveArr[cellID])
-      && (this.checkWinner[i][2] == this.moveArr[cellID])) {
-       console.log('winner');
-    } else {
-      console.log('no winner');
+ Board.prototype.checkWinner = function(team) {
+  console.log(team);
+  console.log(this.moveArr);
+  for (var i = 0; i < this.winCondition.length; i++) {
+    if ((this.moveArr[this.winCondition[i][0]] === team)
+      && (this.moveArr[this.winCondition[i][1]] === team)
+      && (this.moveArr[this.winCondition[i][2]] === team)) {
+        console.log('winner');
+      }
     }
-  }
 };
 
 
 $(document).ready(function() {
-  var game = new Game();
   game.currentPlayer = game.player1;
-  console.log(game.board);
   $('.box').on('click', function(event) {
     event.preventDefault();
     if ($(this).html() === '&nbsp;') {
       $(this).text(game.currentPlayer.team);
       var cellID = $(this).attr('id');
       game.board.makeMove(cellID, game.currentPlayer.team);
-      console.log(cellID);
+      game.board.checkWinner(game.currentPlayer.team);
       game.nextPlayer();
-      game.board.checkWinner(cellID);
-
     } else {
       alert('space already taken you fool!');
     }
   });
 });
+
+var game = new Game();
